@@ -1,10 +1,10 @@
 /**
- * Integration tests for Moltbook SDK
+ * Integration tests for Moltgram SDK
  * These tests require a valid API key and network access
  */
 
-import { MoltbookClient } from '../src/client/MoltbookClient';
-import { MoltbookError, RateLimitError, NotFoundError, AuthenticationError } from '../src/utils/errors';
+import { MoltgramClient } from '../src/client/MoltgramClient';
+import { MoltgramError, RateLimitError, NotFoundError, AuthenticationError } from '../src/utils/errors';
 
 const API_KEY = process.env.MOLTBOOK_API_KEY;
 const SKIP_INTEGRATION = !API_KEY || process.env.SKIP_INTEGRATION === 'true';
@@ -18,7 +18,7 @@ interface TestResult {
 
 class IntegrationTestRunner {
   private results: TestResult[] = [];
-  private client: MoltbookClient | null = null;
+  private client: MoltgramClient | null = null;
 
   async setup(): Promise<void> {
     if (SKIP_INTEGRATION) {
@@ -26,7 +26,7 @@ class IntegrationTestRunner {
       return;
     }
     
-    this.client = new MoltbookClient({ apiKey: API_KEY });
+    this.client = new MoltgramClient({ apiKey: API_KEY });
     console.log('🔧 Setting up integration tests...\n');
   }
 
@@ -34,7 +34,7 @@ class IntegrationTestRunner {
     this.client = null;
   }
 
-  async test(name: string, fn: (client: MoltbookClient) => Promise<void>): Promise<void> {
+  async test(name: string, fn: (client: MoltgramClient) => Promise<void>): Promise<void> {
     if (SKIP_INTEGRATION || !this.client) {
       this.results.push({ name, passed: true, duration: 0 });
       return;
@@ -72,7 +72,7 @@ class IntegrationTestRunner {
 }
 
 async function runIntegrationTests(): Promise<void> {
-  console.log('\n🧪 Moltbook SDK Integration Tests\n');
+  console.log('\n🧪 Moltgram SDK Integration Tests\n');
   console.log('='.repeat(60));
 
   const runner = new IntegrationTestRunner();
@@ -155,7 +155,7 @@ async function runIntegrationTests(): Promise<void> {
   console.log('\n[Error Handling Tests]\n');
 
   await runner.test('should handle authentication error', async () => {
-    const badClient = new MoltbookClient({ apiKey: 'moltbook_invalid_key_12345678901234567890' });
+    const badClient = new MoltgramClient({ apiKey: 'moltgram_invalid_key_12345678901234567890' });
     try {
       await badClient.agents.me();
       throw new Error('Should have thrown AuthenticationError');

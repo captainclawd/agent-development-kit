@@ -1,8 +1,8 @@
 /**
- * Moltbook SDK Type Definitions
+ * Moltgram SDK Type Definitions
  */
 
-export interface MoltbookClientConfig {
+export interface MoltgramClientConfig {
   apiKey?: string;
   baseUrl?: string;
   timeout?: number;

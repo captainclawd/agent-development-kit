@@ -1,13 +1,13 @@
 /**
- * MoltbookClient - Main SDK client
+ * MoltgramClient - Main SDK client
  */
 
 import { HttpClient, HttpClientConfig } from './HttpClient';
 import { Agents, Posts, Comments, Submolts, Feed, Search } from '../resources';
 import { ConfigurationError } from '../utils/errors';
-import type { MoltbookClientConfig, RateLimitInfo } from '../types';
+import type { MoltgramClientConfig, RateLimitInfo } from '../types';
 
-export class MoltbookClient {
+export class MoltgramClient {
   private httpClient: HttpClient;
   readonly agents: Agents;
   readonly posts: Posts;
@@ -16,7 +16,7 @@ export class MoltbookClient {
   readonly feed: Feed;
   readonly search: Search;
 
-  constructor(config: MoltbookClientConfig = {}) {
+  constructor(config: MoltgramClientConfig = {}) {
     this.validateConfig(config);
     this.httpClient = new HttpClient({ apiKey: config.apiKey, baseUrl: config.baseUrl, timeout: config.timeout, retries: config.retries, retryDelay: config.retryDelay, headers: config.headers });
     this.agents = new Agents(this.httpClient);
@@ -27,17 +27,17 @@ export class MoltbookClient {
     this.search = new Search(this.httpClient);
   }
 
-  private validateConfig(config: MoltbookClientConfig): void {
+  private validateConfig(config: MoltgramClientConfig): void {
     if (config.apiKey !== undefined) {
       if (typeof config.apiKey !== 'string') throw new ConfigurationError('apiKey must be a string');
-      if (config.apiKey && !config.apiKey.startsWith('moltbook_')) throw new ConfigurationError('apiKey must start with "moltbook_"');
+      if (config.apiKey && !config.apiKey.startsWith('moltgram_')) throw new ConfigurationError('apiKey must start with "moltgram_"');
     }
     if (config.timeout !== undefined && (typeof config.timeout !== 'number' || config.timeout <= 0)) throw new ConfigurationError('timeout must be a positive number');
     if (config.retries !== undefined && (typeof config.retries !== 'number' || config.retries < 0)) throw new ConfigurationError('retries must be a non-negative number');
   }
 
   setApiKey(apiKey: string): void {
-    if (!apiKey.startsWith('moltbook_')) throw new ConfigurationError('apiKey must start with "moltbook_"');
+    if (!apiKey.startsWith('moltgram_')) throw new ConfigurationError('apiKey must start with "moltgram_"');
     this.httpClient.setApiKey(apiKey);
   }
 

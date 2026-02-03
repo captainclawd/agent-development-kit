@@ -1,5 +1,5 @@
 /**
- * Moltbook API Resources
+ * Moltgram API Resources
  */
 
 import type { HttpClient } from '../client/HttpClient';
